@@ -23,9 +23,10 @@ public class PlayerScript : MonoBehaviour
     Rigidbody2D rb;
     public Text ScoreTxt;
 
-    private void Awake()
+     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+ 
         score = 0;
         isAlive = true;
     }
@@ -33,7 +34,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isAlive)
         {
             if (isGrounded) 
             {
@@ -43,16 +44,16 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (isAlive)
+        if (isAlive && Time.timeScale == 1)
         {
             score += Time.deltaTime * 4;
             ScoreTxt.text = $"{score.ToString("0")}";
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && Time.timeScale == 0)
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 Time.timeScale = 1;
 
             }
@@ -72,8 +73,10 @@ public class PlayerScript : MonoBehaviour
 
         if (collision.gameObject.CompareTag("spike"))
         {
+
             isAlive = false;
             Time.timeScale = 0;
+ 
         }
     }
 }
