@@ -10,14 +10,28 @@ public class SpikeGenerator : MonoBehaviour
     public float maxSpeed;
     public float currentSpeed;
 
+    public float speedMultiplier;
     void Awake()
     {
+        minSpeed = 4;
         currentSpeed = minSpeed;
-        GenereteSpike();
+        GenereteSpikeWithGap();
     }
 
+    public void Update()
+    {
+        if (currentSpeed < maxSpeed) 
+        {
+            currentSpeed += speedMultiplier;
+        }
+    }
+    public void GenereteSpikeWithGap() 
+    {
+        float randowWait = Random.Range(0.1f, 1.5f);
+        Invoke("GenerateSpike", randowWait);
+    }
 
-    public void GenereteSpike()
+    private void GenerateSpike()
     {
         GameObject spikeInstance = Instantiate(spike, transform.position, transform.rotation);
         spikeInstance.GetComponent<SpikeScript>().spikeGenerator = this;
